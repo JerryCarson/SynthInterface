@@ -2,3 +2,4 @@ output.txt
 input.txt
 venv/
 synth.code-workspace
+__pycache__/
