@@ -1,6 +1,7 @@
 import port
 import numpy as np
 from appJar import gui
+import os
 
 
 app = gui()
@@ -33,6 +34,10 @@ def showLabels():
 def press(button):
     if button == "Cancel":
         app.stop()
+        f.close()
+        f1.close()
+        os.remove("input.txt")
+        os.remove("output.txt")
     else:
         if app.getRadioButton("ft") == "Use text":
             with open("input.txt", "w") as input:
@@ -51,7 +56,8 @@ def press(button):
         axes = app.updatePlot("p1", *getXY())
         showLabels()
 
-
+f= open("input.txt","w+")
+f1= open("output.txt","w+")
 app.addButtons(["Submit", "Cancel"], press)
 axes = app.addPlot("p1", *getXY())
 showLabels()
