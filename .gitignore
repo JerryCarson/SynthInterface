@@ -4,7 +4,5 @@ venv/
 synth.code-workspace
 __pycache__/
 .vscode/
-!gui.py
-!port.py
-!README!!!!!!!!!.txt
-!synth.code-workspace
+**/logs/*.log
+**/log/*.log
