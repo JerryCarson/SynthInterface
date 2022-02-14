@@ -15,6 +15,14 @@ app.setEntry("COM port name", "COM1")
 app.setEntry("Baud rate", 9600)
 app.setEntry("f1", "C://Users//1//Desktop/s.txt")
 
+def checkStop():
+    f.close()
+    f1.close()
+    if os.path.exists("input.txt"):
+        os.remove("input.txt")
+    if os.path.exists("output.txt"):
+        os.remove("output.txt")
+    return app
 
 def getXY():
     y = []
@@ -34,10 +42,6 @@ def showLabels():
 def press(button):
     if button == "Cancel":
         app.stop()
-        f.close()
-        f1.close()
-        os.remove("input.txt")
-        os.remove("output.txt")
     else:
         if app.getRadioButton("ft") == "Use text":
             with open("input.txt", "w") as input:
@@ -56,6 +60,7 @@ def press(button):
         axes = app.updatePlot("p1", *getXY())
         showLabels()
 
+app.setStopFunction(checkStop)
 f= open("input.txt","w+")
 f1= open("output.txt","w+")
 app.addButtons(["Submit", "Cancel"], press)
