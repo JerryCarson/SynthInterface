@@ -48,7 +48,6 @@ def press(button):
                 app.getEntry("f1"),
             )
         c.comWrite()
-        app.refreshPlot("p1")
         axes = app.updatePlot("p1", *getXY())
         showLabels()
 
