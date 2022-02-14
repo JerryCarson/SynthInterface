@@ -15,6 +15,7 @@ app.setEntry("COM port name", "COM1")
 app.setEntry("Baud rate", 9600)
 app.setEntry("f1", "C://Users//1//Desktop/s.txt")
 
+
 def checkStop():
     f.close()
     f1.close()
@@ -23,6 +24,7 @@ def checkStop():
     if os.path.exists("output.txt"):
         os.remove("output.txt")
     return app
+
 
 def getXY():
     y = []
@@ -60,9 +62,10 @@ def press(button):
         axes = app.updatePlot("p1", *getXY())
         showLabels()
 
+
 app.setStopFunction(checkStop)
-f= open("input.txt","w+")
-f1= open("output.txt","w+")
+f = open("input.txt", "w+")
+f1 = open("output.txt", "w+")
 app.addButtons(["Submit", "Cancel"], press)
 axes = app.addPlot("p1", *getXY())
 showLabels()
