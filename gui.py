@@ -3,7 +3,6 @@ import numpy as np
 from appJar import gui
 import os
 
-
 app = gui()
 app.addRadioButton("ft", "Use file")
 app.addRadioButton("ft", "Use text")
@@ -50,7 +49,8 @@ def press(button):
                 for line in app.getTextArea("t1"):
                     input.write(line)
             c = port.SerialWrite(
-                app.getEntry("COM port name"), app.getEntry("Baud rate"), "input.txt"
+                app.getEntry("COM port name"), app.getEntry(
+                    "Baud rate"), "input.txt"
             )
         else:
             c = port.SerialWrite(
@@ -68,5 +68,4 @@ f = open("input.txt", "w+")
 f1 = open("output.txt", "w+")
 app.addButtons(["Submit", "Cancel"], press)
 axes = app.addPlot("p1", *getXY())
-showLabels()
 app.go()
