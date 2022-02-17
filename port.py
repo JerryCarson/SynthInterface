@@ -20,3 +20,4 @@ class SerialWrite:
         ) as output:
             for line in input_file:
                 output.write(line)
+                
