@@ -4,13 +4,16 @@ from appJar import gui
 import os
 
 
-app = gui()
-app.addRadioButton("ft", "Use file")
-app.addRadioButton("ft", "Use text")
-app.addFileEntry("f1")
-app.addTextArea("t1")
-app.addLabelEntry("COM port name")
-app.addLabelEntry("Baud rate")
+app = gui("Serial Communication")
+app.setSticky("news")
+app.setExpand("both")
+app.addRadioButton("ft", "Use file", 0, 0)
+app.addRadioButton("ft", "Use text", 1, 0)
+app.addFileEntry("f1", 2, 0)
+app.addTextArea("t1", 3, 0)
+app.addLabelEntry("COM port name", 4, 0)
+app.addLabelEntry("Baud rate", 5, 0)
+app.addVerticalSeparator(0, 1, 0, 7, colour="black")
 app.setEntry("COM port name", "COM1")
 app.setEntry("Baud rate", 9600)
 app.setEntry("f1", "C://Users//1//Desktop/s.txt")
@@ -46,19 +49,18 @@ def press(button):
         app.stop()
     else:
         if app.getRadioButton("ft") == "Use text":
-            with open("input.txt", "w") as input:
-                for line in app.getTextArea("t1"):
-                    input.write(line)
             c = port.SerialWrite(
-                app.getEntry("COM port name"), app.getEntry("Baud rate"), "input.txt"
+                app.getEntry("COM port name"), app.getEntry(
+                    "Baud rate"), "input.txt", app
             )
+            c.comWriteField()
         else:
             c = port.SerialWrite(
                 app.getEntry("COM port name"),
                 app.getEntry("Baud rate"),
-                app.getEntry("f1"),
+                app.getEntry("f1"), app
             )
-        c.comWrite()
+            c.comWrite()
         axes = app.updatePlot("p1", *getXY())
         showLabels()
 
@@ -66,7 +68,7 @@ def press(button):
 app.setStopFunction(checkStop)
 f = open("input.txt", "w+")
 f1 = open("output.txt", "w+")
-app.addButtons(["Submit", "Cancel"], press)
-axes = app.addPlot("p1", *getXY())
+app.addButtons(["Submit", "Cancel"], press, 6, 0)
+axes = app.addPlot("p1", *getXY(), 0, 2, 7, 7)
 showLabels()
 app.go()
