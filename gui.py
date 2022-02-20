@@ -49,20 +49,18 @@ def press(button):
         app.stop()
     else:
         if app.getRadioButton("ft") == "Use text":
-            with open("input.txt", "w") as input:
-                for line in app.getTextArea("t1"):
-                    input.write(line)
             c = port.SerialWrite(
                 app.getEntry("COM port name"), app.getEntry(
-                    "Baud rate"), "input.txt"
+                    "Baud rate"), "input.txt", app
             )
+            c.comWriteField()
         else:
             c = port.SerialWrite(
                 app.getEntry("COM port name"),
                 app.getEntry("Baud rate"),
-                app.getEntry("f1"),
+                app.getEntry("f1"), app
             )
-        c.comWrite()
+            c.comWrite()
         axes = app.updatePlot("p1", *getXY())
         showLabels()
 
@@ -71,6 +69,6 @@ app.setStopFunction(checkStop)
 f = open("input.txt", "w+")
 f1 = open("output.txt", "w+")
 app.addButtons(["Submit", "Cancel"], press, 6, 0)
-axes = app.addPlot("p1", *getXY(), 0, 2, 6, 6)
+axes = app.addPlot("p1", *getXY(), 0, 2, 7, 7)
 showLabels()
 app.go()
