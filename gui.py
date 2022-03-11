@@ -10,13 +10,15 @@ app.setExpand("both")
 app.addRadioButton("ft", "Use file", 0, 0)
 app.addRadioButton("ft", "Use text", 1, 0)
 app.addFileEntry("f1", 2, 0)
-app.addTextArea("t1", 3, 0)
-app.addLabelEntry("COM port name", 4, 0)
-app.addLabelEntry("Baud rate", 5, 0)
-app.addVerticalSeparator(0, 1, 0, 7, colour="black")
+app.addLabelEntry("Frequency", 3, 0)
+app.addTextArea("t1", 4, 0)
+app.addLabelEntry("COM port name", 5, 0)
+app.addLabelEntry("Baud rate", 6, 0)
+app.addVerticalSeparator(0, 1, 0, 8, colour="black")
 app.setEntry("COM port name", "COM1")
 app.setEntry("Baud rate", 9600)
 app.setEntry("f1", "C://Users//1//Desktop/s.txt")
+app.setEntry("Frequency", 1000)
 
 
 def checkStop():
@@ -34,7 +36,7 @@ def getXY():
     with open("output.txt", "r") as input:
         for line in input:
             y.append(float(line))
-    x = np.arange(0.0, np.size(y), 1)
+    x = np.arange(0.0, np.size(y)/int(app.getEntry("Frequency")), 1/int(app.getEntry("Frequency")))
     return x, y
 
 
@@ -68,7 +70,7 @@ def press(button):
 app.setStopFunction(checkStop)
 f = open("input.txt", "w+")
 f1 = open("output.txt", "w+")
-app.addButtons(["Submit", "Cancel"], press, 6, 0)
-axes = app.addPlot("p1", *getXY(), 0, 2, 7, 7)
+app.addButtons(["Submit", "Cancel"], press, 7, 0)
+axes = app.addPlot("p1", *getXY(), 0, 2, 8, 8)
 showLabels()
 app.go()
