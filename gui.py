@@ -1,19 +1,24 @@
 import port
 import numpy as np
-from appJar import gui
+from appJar import gui 
 import os
 
 
-app = gui()
-app.addRadioButton("ft", "Use file")
-app.addRadioButton("ft", "Use text")
-app.addFileEntry("f1")
-app.addTextArea("t1")
-app.addLabelEntry("COM port name")
-app.addLabelEntry("Baud rate")
+app = gui("Serial Communication")
+app.setSticky("news")
+app.setExpand("both")
+app.addRadioButton("ft", "Use file", 0, 0)
+app.addRadioButton("ft", "Use text", 1, 0)
+app.addFileEntry("f1", 2, 0)
+app.addLabelEntry("Frequency", 3, 0)
+app.addTextArea("t1", 4, 0)
+app.addLabelEntry("COM port name", 5, 0)
+app.addLabelEntry("Baud rate", 6, 0)
+app.addVerticalSeparator(0, 1, 0, 8, colour="black")
 app.setEntry("COM port name", "COM1")
 app.setEntry("Baud rate", 9600)
 app.setEntry("f1", "C://Users//1//Desktop/s.txt")
+app.setEntry("Frequency", 1000)
 
 
 def checkStop():
@@ -31,7 +36,7 @@ def getXY():
     with open("output.txt", "r") as input:
         for line in input:
             y.append(float(line))
-    x = np.arange(0.0, np.size(y), 1)
+    x = np.arange(0.0, np.size(y)/int(app.getEntry("Frequency")), 1/int(app.getEntry("Frequency")))
     return x, y
 
 
@@ -46,19 +51,18 @@ def press(button):
         app.stop()
     else:
         if app.getRadioButton("ft") == "Use text":
-            with open("input.txt", "w") as input:
-                for line in app.getTextArea("t1"):
-                    input.write(line)
             c = port.SerialWrite(
-                app.getEntry("COM port name"), app.getEntry("Baud rate"), "input.txt"
+                app.getEntry("COM port name"), app.getEntry(
+                    "Baud rate"), "input.txt", app
             )
+            c.comWriteField()
         else:
             c = port.SerialWrite(
                 app.getEntry("COM port name"),
                 app.getEntry("Baud rate"),
-                app.getEntry("f1"),
+                app.getEntry("f1"), app
             )
-        c.comWrite()
+            c.comWrite()
         axes = app.updatePlot("p1", *getXY())
         showLabels()
 
@@ -66,7 +70,7 @@ def press(button):
 app.setStopFunction(checkStop)
 f = open("input.txt", "w+")
 f1 = open("output.txt", "w+")
-app.addButtons(["Submit", "Cancel"], press)
-axes = app.addPlot("p1", *getXY())
+app.addButtons(["Submit", "Cancel"], press, 7, 0)
+axes = app.addPlot("p1", *getXY(), 0, 2, 8, 8)
 showLabels()
 app.go()
