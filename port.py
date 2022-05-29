@@ -11,11 +11,11 @@ class SerialWrite:
         self.app = app
 
     def comWrite(self):
-        # read_file_path = "input.txt"
-        # with serial.Serial(self.serial_port, self.baud_rate, timeout = 0) as ardu: #opens and automatically closes COM port after use
-        #     with open(read_file_path, "r") as input_file:
-        #         for line in input_file:
-        #             ardu.write(line.strip())
+        read_file_path = "input.txt"
+        with serial.Serial(self.serial_port, self.baud_rate, timeout = 0) as ardu: #opens and automatically closes COM port after use
+            with open(read_file_path, "r") as input_file:
+                for line in input_file:
+                    ardu.write(line.strip())
         with open(self.read_file_path, "r") as input, open(
             "output.txt", "w"
         ) as output:
