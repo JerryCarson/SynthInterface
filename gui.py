@@ -7,12 +7,19 @@ import signal_presets
 
 
 app = gui("Serial Communication")
+
+def pressRB(rb):
+    if app.getRadioButton("ft") != "Use preset":
+        app.disableOptionBox("Signal preset")
+    else:
+        app.enableOptionBox("Signal preset")
+        
 app.setSticky("news")
 app.setExpand("both")
 app.addRadioButton("ft", "Use file", 0, 0)
 app.addRadioButton("ft", "Use text", 1, 0)
 app.addRadioButton("ft", "Use preset", 2, 0)
-app.addLabelOptionBox("Signal preset", ["- Presets -", "sin", "cos"], 3, 0)
+app.addLabelOptionBox("Signal preset", ["- Presets -", "sin", "pulse"], 3, 0)
 app.addFileEntry("f1", 4, 0)
 app.addLabelEntry("Frequency", 5, 0)
 app.addTextArea("t1", 6, 0)
@@ -68,7 +75,10 @@ def press(button):
             )
             c.comWrite()
         elif app.getRadioButton("ft") == "Use preset":
-            signal_presets.sine(app)
+            if app.getOptionBox("Signal preset") == "sin":
+                signal_presets.sine(app)
+            elif app.getOptionBox("Signal preset") == "pulse":
+                signal_presets.square(app)
             c = port.SerialWrite(
                 app.getEntry("COM port name"),
                 app.getEntry("Baud rate"),
@@ -78,14 +88,9 @@ def press(button):
         axes = app.updatePlot("p1", *getXY())
         showLabels()
 
-def press(rb):
-    if app.getRadioButton("ft") != "Use preset":
-        app.disableOptionBox("Signal preset")
-    else:
-        app.enableOptionBox("Signal preset")
 
 app.disableOptionBox("Signal preset")
-app.setRadioButtonChangeFunction("ft", press)
+app.setRadioButtonChangeFunction("ft", pressRB)
 app.setStopFunction(checkStop)
 f = open("input.txt", "w+")
 f1 = open("output.txt", "w+")

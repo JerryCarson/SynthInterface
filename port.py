@@ -13,14 +13,14 @@ class SerialWrite:
 
     def comWrite(self):
         read_file_path = "input.txt"
-        with serial.Serial(self.serial_port, self.baud_rate, self.bytesize, timeout = 0) as ardu: #opens and automatically closes COM port after use
-            ardu.write(bytes((32768>>8)&0b11111111))
-            ardu.write(bytes(32768&0b11111111))
-            with open(read_file_path, "r") as input_file:
-                for line in input_file:
-                    ardu.write(bytes(int(line.strip())))
-            ardu.write(bytes((31744>>8)&0b11111111))
-            ardu.write(bytes(31744&0b11111111))
+        # with serial.Serial(self.serial_port, self.baud_rate, self.bytesize, timeout = 0) as ardu: #opens and automatically closes COM port after use
+        #     ardu.write(bytes((32768>>8)&0b11111111))
+        #     ardu.write(bytes(32768&0b11111111))
+        #     with open(read_file_path, "r") as input_file:
+        #         for line in input_file:
+        #             ardu.write(bytes(int(line.strip())))
+        #     ardu.write(bytes((31744>>8)&0b11111111))
+        #     ardu.write(bytes(31744&0b11111111))
         with open(self.read_file_path, "r") as input, open(
             "output.txt", "w"
         ) as output:
