@@ -3,5 +3,8 @@
         {
             "path": "."
         }
-    ]
+    ],
+    "settings": {
+        "EIDE.SerialPortMonitor.BaudRate": 9600
+    }
 }
