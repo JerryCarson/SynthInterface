@@ -1,10 +1,9 @@
 from faulthandler import disable
-import port
+import port as port
 import numpy as np
 from appJar import gui 
 import os
 import signal_presets
-
 
 app = gui("Serial Communication")
 
@@ -28,7 +27,7 @@ def getXY():
     with open("output.txt", "r") as input:
         for line in input:
             y.append(float(line))
-    x = np.arange(0.0, np.size(y)/int(app.getEntry("Frequency")), 1/int(app.getEntry("Frequency")))
+    x = np.arange(0.0, np.size(y))#/int(app.getEntry("Frequency")), 1/int(app.getEntry("Frequency")))
     return x, y
 
 def showLabels():
@@ -85,7 +84,7 @@ app.addRadioButton("ft", "Use text", 1, 0)
 app.addRadioButton("ft", "Use preset", 2, 0)
 app.addLabelOptionBox("Signal preset", ["- Presets -", "sin", "pulse"], 3, 0)
 app.addFileEntry("f1", 4, 0)
-app.addLabelEntry("Frequency", 5, 0)
+# app.addLabelEntry("Frequency", 5, 0)
 app.addTextArea("t1", 6, 0)
 app.addLabelEntry("COM port name", 7, 0)
 app.addLabelEntry("Baud rate", 8, 0)
@@ -93,7 +92,7 @@ app.addVerticalSeparator(0, 1, 0, 10, colour="black")
 app.setEntry("COM port name", "COM1")
 app.setEntry("Baud rate", 9600)
 # app.setEntry("f1", "C://Users//1//Desktop/s.txt")
-app.setEntry("Frequency", 1000)
+# app.setEntry("Frequency", 1000)
 app.disableOptionBox("Signal preset")
 app.setRadioButtonChangeFunction("ft", pressRB)
 app.setStopFunction(checkStop)
@@ -119,6 +118,8 @@ app.stopTab()
 app.stopTabbedFrame()
 
 app.addButtons(["Submit", "Cancel"], press, 9, 0)
+# app.addMessage("")
+app.addWebLink("GitHub", "https://github.com/JerryCarson/SynthInterface")
 
 f = open("input.txt", "w+")
 f1 = open("output.txt", "w+")

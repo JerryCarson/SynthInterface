@@ -1,7 +1,7 @@
 import numpy as np
 from scipy import signal
 import pyofdm.codec
-import pyofdm.nyquistmodem
+
 
 k=200 #какое-то опорное число, задается пользователем
 
