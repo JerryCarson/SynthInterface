@@ -7,4 +7,5 @@ __pycache__/
 **/logs/*.log
 **/log/*.log
 tempCodeRunnerFile.py
-
+—exclude-module.spec
+test.spec
