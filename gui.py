@@ -119,7 +119,7 @@ app.stopTabbedFrame()
 
 app.addButtons(["Submit", "Cancel"], press, 9, 0)
 # app.addMessage("")
-app.addWebLink("GitHub", "https://github.com/JerryCarson/SynthInterface")
+app.addWebLink("GitHub", "https://github.com/JerryCarson/SynthInterface/tree/presets")
 
 f = open("input.txt", "w+")
 f1 = open("output.txt", "w+")
