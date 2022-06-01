@@ -17,7 +17,7 @@ python gui.py
 
 # Create exe
 Attention!
-Comment out  __version__ = _get_distribution('komm').version
+Comment out:
 ```shell
 .\venv\Lib\site-packages\komm\__init__.py, line 21:
 __version__ = _get_distribution('komm').version
