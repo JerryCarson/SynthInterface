@@ -17,7 +17,11 @@ python gui.py
 
 # Create exe
 Attention!
-Comment out .\venv\Lib\site-packages\komm\ __ init__.py, line 21 [__version__ = _get_distribution('komm').version]
+Comment out  __version__ = _get_distribution('komm').version
+```shell
+.\venv\Lib\site-packages\komm\__init__.py, line 21:
+__version__ = _get_distribution('komm').version
+```
 
 ```shell
 python -O -m PyInstaller --windowed --onefile gui.py
