@@ -36,9 +36,13 @@ def showLabels():
     app.refreshPlot("p1")
 
 def press(button):
-    if button == "Cancel":
-        app.stop()
-    else:
+    if button == "Start gen":
+        handler = port.SerialWrite(app.getEntry("COM port name"), app.getEntry("Baud rate"), "input.txt", app)
+        handler.generationStart()
+    elif button == "Stop gen":
+        handler = port.SerialWrite(app.getEntry("COM port name"), app.getEntry("Baud rate"), "input.txt", app)
+        handler.generationStop()
+    elif button == "Submit":
         if app.getTabbedFrameSelectedTab("TabbedFrame") == "Simple signals":
             if app.getRadioButton("ft") == "Use text":
                 c = port.SerialWrite(
@@ -78,6 +82,7 @@ def press(button):
 
 app.startTabbedFrame("TabbedFrame")
 app.startTab("Simple signals")
+
 app.setExpand("both")
 app.addRadioButton("ft", "Use file", 0, 0)
 app.addRadioButton("ft", "Use text", 1, 0)
@@ -96,6 +101,7 @@ app.setEntry("Baud rate", 9600)
 app.disableOptionBox("Signal preset")
 app.setRadioButtonChangeFunction("ft", pressRB)
 app.setStopFunction(checkStop)
+app.addLabelOptionBox("Frequency (MHz)", [0.1953, 0.2016, 0.2083, 0.2155, 0.2232, 0.2315, 0.2404, 0.25, 0.2604, 0.2717, 0.2841, 0.2976, 0.3125, 0.3289, 0.3472, 0.3676, 0.3906, 0.4167, 0.4464, 0.4808, 0.5208, 0.5682, 0.625, 0.6944, 0.7813, 0.8929, 1.042, 1.25, 1.563, 2.083, 3.125, 6.25], 9, 0)
 
 app.stopTab()
 
@@ -117,7 +123,7 @@ app.setEntry("Pilots distance", 12)
 app.stopTab()
 app.stopTabbedFrame()
 
-app.addButtons(["Submit", "Cancel"], press, 9, 0)
+app.addButtons(["Submit", "Start gen", "Stop gen"], press, 10, 0)
 # app.addMessage("")
 app.addWebLink("GitHub", "https://github.com/JerryCarson/SynthInterface/tree/presets")
 
