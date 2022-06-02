@@ -23,11 +23,12 @@ def checkStop():
     return app
 
 def getXY():
+    fr = int(float(app.getOptionBox("Frequency (MHz)"))*(10**6))
     y = []
     with open("output.txt", "r") as input:
         for line in input:
             y.append(float(line))
-    x = np.arange(0.0, np.size(y))#/int(app.getEntry("Frequency")), 1/int(app.getEntry("Frequency")))
+    x = np.arange(0.0, np.size(y))
     return x, y
 
 def showLabels():
@@ -101,7 +102,7 @@ app.setEntry("Baud rate", 9600)
 app.disableOptionBox("Signal preset")
 app.setRadioButtonChangeFunction("ft", pressRB)
 app.setStopFunction(checkStop)
-app.addLabelOptionBox("Frequency (MHz)", [0.1953, 0.2016, 0.2083, 0.2155, 0.2232, 0.2315, 0.2404, 0.25, 0.2604, 0.2717, 0.2841, 0.2976, 0.3125, 0.3289, 0.3472, 0.3676, 0.3906, 0.4167, 0.4464, 0.4808, 0.5208, 0.5682, 0.625, 0.6944, 0.7813, 0.8929, 1.042, 1.25, 1.563, 2.083, 3.125, 6.25], 9, 0)
+app.addLabelOptionBox("Frequency (MHz)", ["0.1953", "0.2016", "0.2083", "0.2155", "0.2232", "0.2315", "0.2404", "0.25", "0.2604", "0.2717", "0.2841", "0.2976", "0.3125", "0.3289", "0.3472", "0.3676", "0.3906", "0.4167", "0.4464", "0.4808", "0.5208", "0.5682", "0.625", "0.6944", "0.7813", "0.8929", "1.042", "1.25", "1.563", "2.083", "3.125", "6.25"], 9, 0)
 
 app.stopTab()
 

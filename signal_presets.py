@@ -2,21 +2,23 @@ import numpy as np
 from scipy import signal
 import pyofdm.codec
 
-
-k=200 #какое-то опорное число, задается пользователем
+def step(app):
+    fr = int(float(app.getOptionBox("Frequency (MHz)"))*(10**6))
+    step = int(512/(100*(10**6)/fr)+0.5)
+    return step
 
 def sine(app):
     with open("input.txt", "w+") as input:
-        a = np.linspace(0, 2*np.pi, k*16) #одномерный массив значений икса (старт, стоп, количество точек между)
-        for i in range (0, k*16):
-            input.write(str(np.sin(a[i]))) #генерируем значения синуса на основе массива иксов
+        a = np.linspace(0, 2*np.pi, 512)
+        for i in range (0, 512, step(app)):
+            input.write(str(np.sin(a[i]))) 
             input.write("\n")
 
-def square(app): #то же самое для прямоугольного импульса
+def square(app):
     with open("input.txt", "w+") as input:
-        t = np.linspace(0, 1, k*16, endpoint=False)
+        t = np.linspace(0, 1, 512, endpoint=False)
         a = signal.square(2 * np.pi * 1 * t)
-        for i in range (0, k*16):
+        for i in range (0, 512, step(app)):
             input.write(str(a[i]))
             input.write("\n")
 
@@ -50,6 +52,3 @@ def ofdm(freqSamples, carriers, order, dist, app):
         for i in range (0, complex_signal.size):
                 input.write(str(float(complex_signal[i])))
                 input.write("\n")
-
-
-
