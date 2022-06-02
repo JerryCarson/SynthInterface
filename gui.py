@@ -23,7 +23,6 @@ def checkStop():
     return app
 
 def getXY():
-    fr = int(float(app.getOptionBox("Frequency (MHz)"))*(10**6))
     y = []
     with open("output.txt", "r") as input:
         for line in input:
