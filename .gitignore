@@ -10,5 +10,6 @@ tempCodeRunnerFile.py
 —exclude-module.spec
 test.spec
 build/
+dist/
 *.spec
 __pycache__/
