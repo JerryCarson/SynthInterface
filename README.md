@@ -6,7 +6,7 @@ python -m venv venv
 
 # Install requirements
 ```shell
-pip3 install pyserial numpy appjar scipy pyofdm pyinstaller
+pip3 install pyserial numpy appjar scipy pyofdm
 python -m pip install -U matplotlib
 ```
 
@@ -22,7 +22,14 @@ Comment out:
 .\venv\Lib\site-packages\komm\__init__.py, line 21:
 __version__ = _get_distribution('komm').version
 ```
-
+Do:
 ```shell
+pip3 install pyinstaller
 python -O -m PyInstaller --windowed --onefile gui.py
+```
+Or:
+```shell
+python -m pip install -U nuitka
+pip3 install ordered-set zstandard
+python -m nuitka --follow-imports --standalone --onefile --enable-plugin=numpy gui.py
 ```
