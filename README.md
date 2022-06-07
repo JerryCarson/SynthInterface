@@ -27,7 +27,7 @@ Do:
 pip3 install pyinstaller
 python -O -m PyInstaller --windowed --onefile gui.py
 ```
-Or:
+[Not working]Or:
 ```shell
 python -m pip install -U nuitka
 pip3 install ordered-set zstandard

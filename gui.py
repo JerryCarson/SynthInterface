@@ -69,7 +69,7 @@ def press(button):
                 )
                 c.comWrite()
         elif app.getTabbedFrameSelectedTab("TabbedFrame") == "OFDM generation":
-            signal_presets.ofdm(app.getEntry("Frequency samples"), app.getEntry("Number of carriers"), app.getEntry("QAM order"), app.getEntry("Pilots distance"), app)
+            signal_presets.ofdm(app.getEntry("Frequency samples"), app.getEntry("Number of carriers"), app.getOptionBox("QAM order"), app.getEntry("Pilots distance"), app)
             c = port.SerialWrite(
                         app.getEntry("COM port name"),
                         app.getEntry("Baud rate"),
@@ -111,11 +111,12 @@ app.setExpand("both")
 app.addTextArea("t2")
 app.addLabelEntry("Frequency samples")
 app.addLabelEntry("Number of carriers")
-app.addLabelEntry("QAM order")
+app.addLabelOptionBox("QAM order", [2,4,8])
+# app.addLabelEntry("QAM order")
 app.addLabelEntry("Pilots distance")
 app.setEntry("Frequency samples", 2048)
 app.setEntry("Number of carriers", 16)
-app.setEntry("QAM order", 8)
+# app.setEntry("QAM order", 8)
 app.setEntry("Pilots distance", 12)
 app.setTextArea("t2", "1\n2\n3\n4\n5\n")
 
