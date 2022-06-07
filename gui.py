@@ -128,6 +128,6 @@ app.addWebLink("GitHub", "https://github.com/JerryCarson/SynthInterface/tree/pre
 
 f = open("input.txt", "w+")
 f1 = open("output.txt", "w+")
-axes = app.addPlot("p1", *getXY(), 0, 2, 10, 10)
+axes = app.addPlot("p1", *getXY(), 0, 2, 12, 12)
 showLabels()
 app.go()
