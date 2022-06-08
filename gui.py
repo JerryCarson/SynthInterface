@@ -28,7 +28,8 @@ def getXY():
     y = []
     with open("output.txt", "r") as input:
         for line in input:
-            y.append(float(line))
+            if (line != "\n") and (not(line.isspace())):
+                y.append(float(line))
     x = np.arange(0.0, np.size(y))
     return x, y
 
@@ -46,7 +47,7 @@ def press(button):
         handler.generationStop()
     elif button == "Формировать сигнал":
         if app.getTabbedFrameSelectedTab("TabbedFrame") == "Simple signals":
-            if app.getRadioButton("ft") == "Задать вручную в текстовом поле":
+            if app.getRadioButton("ft") == "Задать вручную в текстовом поле:":
                 c = port.SerialWrite(
                     app.getEntry("COM порт"), app.getEntry(
                         "Baud rate"), "input.txt", app
@@ -93,9 +94,10 @@ app.addRadioButton("ft", "Готовые шаблоны")
 app.addLabelOptionBox("Шаблон", ["sin", "pulse"])
 app.addLabelOptionBox("Частота (MHz)", ["0.1953", "0.2016", "0.2083", "0.2155", "0.2232", "0.2315", "0.2404", "0.25", "0.2604", "0.2717", "0.2841", "0.2976", "0.3125", "0.3289", "0.3472", "0.3676", "0.3906", "0.4167", "0.4464", "0.4808", "0.5208", "0.5682", "0.625", "0.6944", "0.7813", "0.8929", "1.042", "1.25", "1.563", "2.083", "3.125", "6.25"])
 # app.addHorizontalSeparator(colour="black")
-app.addRadioButton("ft", "Задать вручную в текстовом поле")
+app.addRadioButton("ft", "Задать вручную в текстовом поле:")
 # app.addLabelEntry("Частота", 5, 0)
 app.addTextArea("t1")
+app.setTextArea("t1", "1\n2\n1\n2\n1\n")
 # app.addVerticalSeparator(0, 1, 0, 10, colour="black")
 # app.setEntry("f1", "C://Users//1//Desktop/s.txt")
 # app.setEntry("Частота", 1000)
@@ -133,7 +135,7 @@ app.setEntry("Baud rate", 9600)
 app.addHorizontalSeparator(colour="black")
 app.addButtons(["Формировать сигнал", "Начать генерацию", "Остановить"], press, 10, 0)
 # app.addMessage("")
-app.addWebLink("GitHub", "https://github.com/JerryCarson/SynthInterface/tree/presets")
+app.addWebLink("GitHub", "https://github.com/JerryCarson/SynthInterface")
 
 f = open("input.txt", "w+")
 f1 = open("output.txt", "w+")
