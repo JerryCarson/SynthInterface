@@ -1,5 +1,6 @@
 import numpy as np
 from scipy import signal
+from scipy.signal import hilbert
 import pyofdm.codec
 
 #there are some functions for signal genration
@@ -53,3 +54,12 @@ def ofdm(freqSamples, carriers, order, dist, app):
         for i in range (0, complex_signal.size):
                 input.write(str(float(complex_signal[i])))
                 input.write("\n")
+    return complex_signal
+
+def get_envelope(ofdm_signal, app):
+    analytic_signal = hilbert(np.real(ofdm(app.getEntry("Семплы"), app.getEntry("Число поднесущих"), app.getOptionBox("Размер созвездия"), app.getEntry("Расстояние между пилот-несущими"), app)))
+    with open('input.txt', 'w') as ouf:
+        for i in range (0, analytic_signal.size):
+            ouf.write(str(np.real(analytic_signal[i])))
+            ouf.write("\n")
+    return np.abs(analytic_signal)

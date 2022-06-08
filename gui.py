@@ -72,13 +72,22 @@ def press(button):
                 )
                 c.comWrite()
         elif app.getTabbedFrameSelectedTab("TabbedFrame") == "OFDM генерация":
-            signal_presets.ofdm(app.getEntry("Семплы"), app.getEntry("Число поднесущих"), app.getOptionBox("Размер созвездия"), app.getEntry("Расстояние между пилот-несущими"), app)
-            c = port.SerialWrite(
-                        app.getEntry("COM порт"),
-                        app.getEntry("Baud rate"),
-                        "input.txt", app
-                    )
-            c.comWrite()
+            if app.getRadioButton("song") == "Формировать сигнал":
+                signal_presets.ofdm(app.getEntry("Семплы"), app.getEntry("Число поднесущих"), app.getOptionBox("Размер созвездия"), app.getEntry("Расстояние между пилот-несущими"), app)
+                c = port.SerialWrite(
+                            app.getEntry("COM порт"),
+                            app.getEntry("Baud rate"),
+                            "input.txt", app
+                        )
+                c.comWrite()
+            elif app.getRadioButton("song") == "Формировать огибающую":
+                signal_presets.get_envelope(signal_presets.ofdm(app.getEntry("Семплы"), app.getEntry("Число поднесущих"), app.getOptionBox("Размер созвездия"), app.getEntry("Расстояние между пилот-несущими"), app), app)
+                c = port.SerialWrite(
+                            app.getEntry("COM порт"),
+                            app.getEntry("Baud rate"),
+                            "input.txt", app
+                        )
+                c.comWrite()
 
         axes = app.updatePlot("p1", *getXY())
         showLabels()
@@ -112,6 +121,8 @@ app.startTab("OFDM генерация")
 
 app.setExpand("both")
 app.addTextArea("t2")
+app.addRadioButton("song", "Формировать сигнал")
+app.addRadioButton("song", "Формировать огибающую")
 app.addLabelEntry("Семплы")
 app.addLabelEntry("Число поднесущих")
 app.addLabelOptionBox("Размер созвездия", [2,4,8])
