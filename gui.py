@@ -8,10 +8,12 @@ import signal_presets
 app = gui("Serial Communication")
 
 def pressRB(rb):
-    if app.getRadioButton("ft") != "Use preset":
-        app.disableOptionBox("Signal preset")
+    if app.getRadioButton("ft") != "Готовые шаблоны":
+        app.disableOptionBox("Шаблон")
+        app.disableOptionBox("Частота (MHz)")
     else:
-        app.enableOptionBox("Signal preset")
+        app.enableOptionBox("Шаблон")
+        app.enableOptionBox("Частота (MHz)")
 
 def checkStop():
     f.close()
@@ -36,42 +38,42 @@ def showLabels():
     app.refreshPlot("p1")
 
 def press(button):
-    if button == "Start gen":
-        handler = port.SerialWrite(app.getEntry("COM port name"), app.getEntry("Baud rate"), "input.txt", app)
+    if button == "Начать генерацию":
+        handler = port.SerialWrite(app.getEntry("COM порт"), app.getEntry("Baud rate"), "input.txt", app)
         handler.generationStart()
-    elif button == "Stop gen":
-        handler = port.SerialWrite(app.getEntry("COM port name"), app.getEntry("Baud rate"), "input.txt", app)
+    elif button == "Остановить":
+        handler = port.SerialWrite(app.getEntry("COM порт"), app.getEntry("Baud rate"), "input.txt", app)
         handler.generationStop()
-    elif button == "Submit":
+    elif button == "Формировать сигнал":
         if app.getTabbedFrameSelectedTab("TabbedFrame") == "Simple signals":
-            if app.getRadioButton("ft") == "Use text":
+            if app.getRadioButton("ft") == "Задать вручную в текстовом поле":
                 c = port.SerialWrite(
-                    app.getEntry("COM port name"), app.getEntry(
+                    app.getEntry("COM порт"), app.getEntry(
                         "Baud rate"), "input.txt", app
                 )
                 c.comWriteField()
-            elif app.getRadioButton("ft") == "Use file":
+            elif app.getRadioButton("ft") == "Файл с отсчетами":
                 c = port.SerialWrite(
-                    app.getEntry("COM port name"),
+                    app.getEntry("COM порт"),
                     app.getEntry("Baud rate"),
                     app.getEntry("f1"), app
                 )
                 c.comWrite()
-            elif app.getRadioButton("ft") == "Use preset":
-                if app.getOptionBox("Signal preset") == "sin":
+            elif app.getRadioButton("ft") == "Готовые шаблоны":
+                if app.getOptionBox("Шаблон") == "sin":
                     signal_presets.sine(app)
-                elif app.getOptionBox("Signal preset") == "pulse":
+                elif app.getOptionBox("Шаблон") == "pulse":
                     signal_presets.square(app)
                 c = port.SerialWrite(
-                    app.getEntry("COM port name"),
+                    app.getEntry("COM порт"),
                     app.getEntry("Baud rate"),
                     "input.txt", app
                 )
                 c.comWrite()
-        elif app.getTabbedFrameSelectedTab("TabbedFrame") == "OFDM generation":
-            signal_presets.ofdm(app.getEntry("Frequency samples"), app.getEntry("Number of carriers"), app.getOptionBox("QAM order"), app.getEntry("Pilots distance"), app)
+        elif app.getTabbedFrameSelectedTab("TabbedFrame") == "OFDM генерация":
+            signal_presets.ofdm(app.getEntry("Семплы"), app.getEntry("Число поднесущих"), app.getOptionBox("Размер созвездия"), app.getEntry("Расстояние между пилот-несущими"), app)
             c = port.SerialWrite(
-                        app.getEntry("COM port name"),
+                        app.getEntry("COM порт"),
                         app.getEntry("Baud rate"),
                         "input.txt", app
                     )
@@ -84,46 +86,52 @@ app.startTabbedFrame("TabbedFrame")
 app.startTab("Simple signals")
 
 app.setExpand("both")
-app.addRadioButton("ft", "Use file", 0, 0)
-app.addRadioButton("ft", "Use text", 1, 0)
-app.addRadioButton("ft", "Use preset", 2, 0)
-app.addLabelOptionBox("Signal preset", ["- Presets -", "sin", "pulse"], 3, 0)
-app.addFileEntry("f1", 4, 0)
-# app.addLabelEntry("Frequency", 5, 0)
-app.addTextArea("t1", 6, 0)
-app.addLabelEntry("COM port name", 7, 0)
-app.addLabelEntry("Baud rate", 8, 0)
-app.addVerticalSeparator(0, 1, 0, 10, colour="black")
-app.setEntry("COM port name", "COM1")
-app.setEntry("Baud rate", 9600)
+app.addRadioButton("ft", "Файл с отсчетами")
+app.addFileEntry("f1")
+# app.addHorizontalSeparator(colour="black")
+app.addRadioButton("ft", "Готовые шаблоны")
+app.addLabelOptionBox("Шаблон", ["sin", "pulse"])
+app.addLabelOptionBox("Частота (MHz)", ["0.1953", "0.2016", "0.2083", "0.2155", "0.2232", "0.2315", "0.2404", "0.25", "0.2604", "0.2717", "0.2841", "0.2976", "0.3125", "0.3289", "0.3472", "0.3676", "0.3906", "0.4167", "0.4464", "0.4808", "0.5208", "0.5682", "0.625", "0.6944", "0.7813", "0.8929", "1.042", "1.25", "1.563", "2.083", "3.125", "6.25"])
+# app.addHorizontalSeparator(colour="black")
+app.addRadioButton("ft", "Задать вручную в текстовом поле")
+# app.addLabelEntry("Частота", 5, 0)
+app.addTextArea("t1")
+# app.addVerticalSeparator(0, 1, 0, 10, colour="black")
 # app.setEntry("f1", "C://Users//1//Desktop/s.txt")
-# app.setEntry("Frequency", 1000)
-app.disableOptionBox("Signal preset")
+# app.setEntry("Частота", 1000)
+app.disableOptionBox("Шаблон")
+app.disableOptionBox("Частота (MHz)")
 app.setRadioButtonChangeFunction("ft", pressRB)
 app.setStopFunction(checkStop)
-app.addLabelOptionBox("Frequency (MHz)", ["0.1953", "0.2016", "0.2083", "0.2155", "0.2232", "0.2315", "0.2404", "0.25", "0.2604", "0.2717", "0.2841", "0.2976", "0.3125", "0.3289", "0.3472", "0.3676", "0.3906", "0.4167", "0.4464", "0.4808", "0.5208", "0.5682", "0.625", "0.6944", "0.7813", "0.8929", "1.042", "1.25", "1.563", "2.083", "3.125", "6.25"], 9, 0)
 
 app.stopTab()
 
-app.startTab("OFDM generation")
+app.startTab("OFDM генерация")
 
 app.setExpand("both")
 app.addTextArea("t2")
-app.addLabelEntry("Frequency samples")
-app.addLabelEntry("Number of carriers")
-app.addLabelOptionBox("QAM order", [2,4,8])
-# app.addLabelEntry("QAM order")
-app.addLabelEntry("Pilots distance")
-app.setEntry("Frequency samples", 2048)
-app.setEntry("Number of carriers", 16)
-# app.setEntry("QAM order", 8)
-app.setEntry("Pilots distance", 12)
+app.addLabelEntry("Семплы")
+app.addLabelEntry("Число поднесущих")
+app.addLabelOptionBox("Размер созвездия", [2,4,8])
+# app.addLabelEntry("Размер созвездия")
+app.addLabelEntry("Расстояние между пилот-несущими")
+app.setEntry("Семплы", 512)
+app.setEntry("Число поднесущих", 16)
+# app.setEntry("Размер созвездия", 8)
+app.setEntry("Расстояние между пилот-несущими", 12)
 app.setTextArea("t2", "1\n2\n3\n4\n5\n")
 
 app.stopTab()
 app.stopTabbedFrame()
 
-app.addButtons(["Submit", "Start gen", "Stop gen"], press, 10, 0)
+app.addVerticalSeparator(0, 1, 0, 12, colour="black")
+app.addHorizontalSeparator(colour="black")
+app.addLabelEntry("COM порт")
+app.addLabelEntry("Baud rate")
+app.setEntry("COM порт", "COM1")
+app.setEntry("Baud rate", 9600)
+app.addHorizontalSeparator(colour="black")
+app.addButtons(["Формировать сигнал", "Начать генерацию", "Остановить"], press, 10, 0)
 # app.addMessage("")
 app.addWebLink("GitHub", "https://github.com/JerryCarson/SynthInterface/tree/presets")
 

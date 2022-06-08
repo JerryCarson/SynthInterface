@@ -2,8 +2,11 @@ import numpy as np
 from scipy import signal
 import pyofdm.codec
 
-def step(app):
-    fr = int(float(app.getOptionBox("Frequency (MHz)"))*(10**6))
+#there are some functions for signal genration
+#they return array of Y values
+
+def step(app):  #special function for frequency setup
+    fr = int(float(app.getOptionBox("Частота (MHz)"))*(10**6))
     step = int(512/(100*(10**6)/fr)+0.5)
     return step
 
@@ -24,11 +27,9 @@ def square(app):
 
 def ofdm(freqSamples, carriers, order, dist, app):
     with open("input.txt", "w+") as input:
-        # tx_im = np.array([], dtype=int)
+
         a = app.getTextArea("t2").split()
         tx_im = np.array([a[i] for i in range(0, len(a))])
-        # for i in range (0, len(a)):
-        #     np.append(tx_im, a[i])
         tx_enc = np.array(tx_im, dtype="uint8").flatten()
 
         totalFreqSamples = int(freqSamples)

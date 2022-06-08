@@ -27,9 +27,3 @@ Do:
 pip3 install pyinstaller
 python -O -m PyInstaller --windowed --onefile gui.py
 ```
-[Not working]Or:
-```shell
-python -m pip install -U nuitka
-pip3 install ordered-set zstandard
-python -m nuitka --follow-imports --standalone --onefile --enable-plugin=numpy gui.py
-```
