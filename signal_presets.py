@@ -6,8 +6,9 @@ import pyofdm.codec
 #there are some functions for signal genration
 #they return array of Y values
 
+
 def step(app):  #special function for frequency setup
-    fr = int(float(app.getOptionBox("Частота (MHz)"))*(10**6))
+    fr = int(float(app.getOptionBox("Частота (МГц)"))*(10**6))
     step = int(512/(100*(10**6)/fr)+0.5)
     return step
 
@@ -57,9 +58,10 @@ def ofdm(freqSamples, carriers, order, dist, app):
     return complex_signal
 
 def get_envelope(ofdm_signal, app):
-    analytic_signal = hilbert(np.real(ofdm(app.getEntry("Семплы"), app.getEntry("Число поднесущих"), app.getOptionBox("Размер созвездия"), app.getEntry("Расстояние между пилот-несущими"), app)))
+    analytic_signal = (np.real(ofdm(app.getEntry("Семплы"), app.getEntry("Число поднесущих"), app.getOptionBox("Размер созвездия"), app.getEntry("Расстояние между пилот-несущими"), app)))
     with open('input.txt', 'w') as ouf:
         for i in range (0, analytic_signal.size):
-            ouf.write(str(np.real(analytic_signal[i])))
-            ouf.write("\n")
+            for j in range (0, 1):
+                ouf.write(str(np.sin(i+j)*np.real(analytic_signal[i]+0.003)))
+                ouf.write("\n")
     return np.abs(analytic_signal)
