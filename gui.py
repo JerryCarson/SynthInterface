@@ -1,4 +1,5 @@
 from faulthandler import disable
+from msilib.schema import RadioButton
 import port as port
 import numpy as np
 from appJar import gui
@@ -12,7 +13,7 @@ IN = "input.txt"
 BR = 9600
 FRQS = ["0.1953", "0.2016", "0.2083", "0.2155", "0.2232", "0.2315", "0.2404", "0.25", "0.2604", "0.2717", "0.2841", "0.2976", "0.3125", "0.3289",
         "0.3472", "0.3676", "0.3906", "0.4167", "0.4464", "0.4808", "0.5208", "0.5682", "0.625", "0.6944", "0.7813", "0.8929", "1.042", "1.25", "1.563", "2.083", "3.125", "6.25"]
-
+SAMPLS = ["Синус", "Прямоугольный импульс"]
 
 def pressRB(rb):
     if app.getRadioButton("ft") != "Готовые шаблоны":
@@ -65,7 +66,7 @@ def press(button):
         handler = port.SerialWrite(COM, BR, IN, app)
         handler.generationStop()
     elif button == "Формировать сигнал":
-        if app.getTabbedFrameSelectedTab("TabbedFrame") == "Simple signals":
+        if app.getTabbedFrameSelectedTab("TabbedFrame") == "Простые сигналы":
             if app.getRadioButton("ft") == "Задать вручную в текстовом поле:":
                 c = port.SerialWrite(COM, BR, IN, app)
                 c.comWriteField()
@@ -73,9 +74,9 @@ def press(button):
                 c = port.SerialWrite(COM, BR, app.getEntry("f1"), app)
                 c.comWrite()
             elif app.getRadioButton("ft") == "Готовые шаблоны":
-                if app.getOptionBox("Шаблон") == "sin":
+                if app.getOptionBox("Шаблон") == "Синус":
                     signal_presets.sine(app)
-                elif app.getOptionBox("Шаблон") == "pulse":
+                elif app.getOptionBox("Шаблон") == "Прямоугольный импульс":
                     signal_presets.square(app)
                 c = port.SerialWrite(COM, BR, IN, app)
                 c.comWrite()
@@ -101,13 +102,13 @@ def press(button):
 # DIST = app.getEntry("Расстояние между пилот-несущими")
 
 app.startTabbedFrame("TabbedFrame")
-app.startTab("Simple signals")
+app.startTab("Простые сигналы")
 
 app.setExpand("both")
 app.addRadioButton("ft", "Файл с отсчетами")
 app.addFileEntry("f1")
 app.addRadioButton("ft", "Готовые шаблоны")
-app.addLabelOptionBox("Шаблон", ["sin", "pulse"])
+app.addLabelOptionBox("Шаблон", SAMPLS)
 app.addLabelOptionBox("Частота (МГц)", FRQS)
 app.addRadioButton("ft", "Задать вручную в текстовом поле:")
 app.addTextArea("t1")
@@ -150,5 +151,6 @@ f = open(IN, "w+")
 f1 = open("output.txt", "w+")
 axes = app.addPlot("p1", *getXY(), 0, 2, 12, 12)
 showLabels()
+
 
 app.go()
