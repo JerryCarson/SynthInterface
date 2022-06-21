@@ -16,7 +16,7 @@ FRQS = ["0.1953", "0.2016", "0.2083", "0.2155", "0.2232", "0.2315", "0.2404", "0
 SAMPLS = ["Синус", "Прямоугольный импульс"]
 
 def pressRB(rb):
-    if app.getRadioButton("ft") != "Готовые шаблоны":
+    if app.getRadioButton("ft") != "Готовые шаблоны:":
         app.disableOptionBox("Шаблон")
         app.disableOptionBox("Частота (МГц)")
     else:
@@ -70,10 +70,10 @@ def press(button):
             if app.getRadioButton("ft") == "Задать вручную в текстовом поле:":
                 c = port.SerialWrite(COM, BR, IN, app)
                 c.comWriteField()
-            elif app.getRadioButton("ft") == "Файл с отсчетами":
+            elif app.getRadioButton("ft") == "Файл с отсчетами (текстовый файл с числами,\n как в текстовом поле ниже)":
                 c = port.SerialWrite(COM, BR, app.getEntry("f1"), app)
                 c.comWrite()
-            elif app.getRadioButton("ft") == "Готовые шаблоны":
+            elif app.getRadioButton("ft") == "Готовые шаблоны:":
                 if app.getOptionBox("Шаблон") == "Синус":
                     signal_presets.sine(app)
                 elif app.getOptionBox("Шаблон") == "Прямоугольный импульс":
@@ -105,9 +105,9 @@ app.startTabbedFrame("TabbedFrame")
 app.startTab("Простые сигналы")
 
 app.setExpand("both")
-app.addRadioButton("ft", "Файл с отсчетами")
+app.addRadioButton("ft", "Файл с отсчетами (текстовый файл с числами,\n как в текстовом поле ниже)")
 app.addFileEntry("f1")
-app.addRadioButton("ft", "Готовые шаблоны")
+app.addRadioButton("ft", "Готовые шаблоны:")
 app.addLabelOptionBox("Шаблон", SAMPLS)
 app.addLabelOptionBox("Частота (МГц)", FRQS)
 app.addRadioButton("ft", "Задать вручную в текстовом поле:")
@@ -145,7 +145,7 @@ app.setEntry("COM порт", "COM1")
 app.addHorizontalSeparator(colour="black")
 app.addButtons(["Формировать сигнал", "Начать генерацию",
                "Остановить"], press, 10, 0)
-app.addWebLink("GitHub", "https://github.com/JerryCarson/SynthInterface")
+app.addWebLink("GitHub (исходный код)", "https://github.com/JerryCarson/SynthInterface")
 
 f = open(IN, "w+")
 f1 = open("output.txt", "w+")
