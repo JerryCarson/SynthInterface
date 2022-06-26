@@ -4,10 +4,11 @@ import numpy as np
 
 
 class SerialWrite:
-    def __init__(self, com, baud, file):
+    def __init__(self, com, baud, file, app):
         self.serial_port = com
         self.baud_rate = baud
         self.read_file_path = file
+        self.app = app
 
     def comWrite(self):
         # read_file_path = "input.txt"
@@ -15,9 +16,13 @@ class SerialWrite:
         #     with open(read_file_path, "r") as input_file:
         #         for line in input_file:
         #             ardu.write(line.strip())
-        with open(self.read_file_path, "r") as input_file, open(
+        with open(self.read_file_path, "r") as input, open(
             "output.txt", "w"
         ) as output:
-            for line in input_file:
+            for line in input:
                 output.write(line)
-                
+
+    def comWriteField(self):
+        with open("output.txt", "w+") as output:
+            for line in self.app.getTextArea("t1"):
+                output.write(line)
