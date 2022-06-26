@@ -5,7 +5,7 @@ from appJar import gui
 import os
 import signal_presets
 from matplotlib.ticker import EngFormatter
-import ttps
+import tooltip_list
 
 app = gui("Serial Communication")
 app.setResizable(canResize=False)
@@ -45,6 +45,7 @@ def showLabels():
 
 
 def press(button):
+    
     COM = app.getEntry("COM порт")
     SAMPL = app.getEntry("Семплы")
     CAR_NUM = app.getEntry("Число поднесущих")
@@ -146,12 +147,6 @@ f1 = open("output.txt", "w+")
 axes = app.addPlot("p1", *getXY(), 0, 2, 12, 12)
 showLabels()
 
-app.setButtonTooltip("Формировать сигнал", ttps.buttonSIG)
-app.setButtonTooltip("Начать генерацию", ttps.buttonGEN)
-app.setButtonTooltip("Остановить", ttps.buttonSTOP)
-app.setEntryTooltip("COM порт", ttps.entryCOM)
-app.setTextAreaTooltip("t1", ttps.txt1)
-app.setTextAreaTooltip("t2", ttps.txt2)
-app.setEntryTooltip("f1", ttps.fileENTR)
+tooltip_list.set_tooltips(app)
 
 app.go()
