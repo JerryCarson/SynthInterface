@@ -7,3 +7,14 @@ __pycache__/
 **/logs/*.log
 **/log/*.log
 tempCodeRunnerFile.py
+—exclude-module.spec
+test.spec
+build/
+dist/
+*.spec
+__pycache__/
+gui.build/
+*.exe
+gui.cmd
+test.py
+testbit.py
