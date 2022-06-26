@@ -5,6 +5,7 @@ from appJar import gui
 import os
 import signal_presets
 from matplotlib.ticker import EngFormatter
+import ttps
 
 app = gui("Serial Communication")
 app.setResizable(canResize=False)
@@ -145,16 +146,12 @@ f1 = open("output.txt", "w+")
 axes = app.addPlot("p1", *getXY(), 0, 2, 12, 12)
 showLabels()
 
-app.setButtonTooltip(
-    "Формировать сигнал", "По нажатию кнопки данные сигнала загружаются на плату")
-app.setButtonTooltip(
-    "Начать генерацию", "По нажатию кнопки на плату отправляется команда - начать непрерывную генерацию заданного сигнала")
-app.setButtonTooltip(
-    "Остановить", "Отправляет на плату команду остановить генерацию сигнала")
-app.setEntryTooltip(
-    "COM порт", "Необходимо посмотреть номер порта, соответствующего подключенной плате. Доступные порты можно посмотреть в диспетчере устройств (выполнить compmgmt.msc)")
-app.setTextAreaTooltip("t1", "Текстовое поле позволяет быстро задавать несложные сигналы такие как пила. В дробных значениях использовать не запятую, а точку. Отсчеты на выходе переключаются каждые 10 наносекунд. Формируйте сигналы исходя из этого, если необходимо добиться определенной чаcтоты.")
-app.setTextAreaTooltip("t2", "В текстовом поле необходимо указать какие-либо целые числа. Они будут закодированы соответствующим образом, и из этого кода будет сформирован OFDM сигнал.")
-app.setEntryTooltip("f1", "Необходимо указать путь к текстовому файлу. Текстовый файл должен содержать отсчеты сигнала, написанные в один столбик. В дробных значениях использовать не запятую, а точку. Отсчеты на выходе переключаются каждые 10 наносекунд. Формируйте собственные файлы исходя из этого, если необходимо добиться определенной чаcтоты.")
+app.setButtonTooltip("Формировать сигнал", ttps.buttonSIG)
+app.setButtonTooltip("Начать генерацию", ttps.buttonGEN)
+app.setButtonTooltip("Остановить", ttps.buttonSTOP)
+app.setEntryTooltip("COM порт", ttps.entryCOM)
+app.setTextAreaTooltip("t1", ttps.txt1)
+app.setTextAreaTooltip("t2", ttps.txt2)
+app.setEntryTooltip("f1", ttps.fileENTR)
 
 app.go()
