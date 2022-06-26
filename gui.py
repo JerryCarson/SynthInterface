@@ -15,6 +15,7 @@ FRQS = ["0.1953", "0.2016", "0.2083", "0.2155", "0.2232", "0.2315", "0.2404", "0
         "0.3472", "0.3676", "0.3906", "0.4167", "0.4464", "0.4808", "0.5208", "0.5682", "0.625", "0.6944", "0.7813", "0.8929", "1.042", "1.25", "1.563", "2.083", "3.125", "6.25"]
 SAMPLS = ["Синус", "Прямоугольный импульс"]
 
+
 def pressRB(rb):
     if app.getRadioButton("ft") != "Готовые шаблоны:":
         app.disableOptionBox("Шаблон")
@@ -70,7 +71,7 @@ def press(button):
             if app.getRadioButton("ft") == "Задать вручную в текстовом поле:":
                 c = port.SerialWrite(COM, BR, IN, app)
                 c.comWriteField()
-            elif app.getRadioButton("ft") == "Файл с отсчетами (текстовый файл с числами,\n как в текстовом поле ниже)":
+            elif app.getRadioButton("ft") == "Файл с отсчетами":
                 c = port.SerialWrite(COM, BR, app.getEntry("f1"), app)
                 c.comWrite()
             elif app.getRadioButton("ft") == "Готовые шаблоны:":
@@ -95,17 +96,12 @@ def press(button):
         showLabels()
 
 
-# COM = app.getEntry("COM порт")
-# SAMPL = app.getEntry("Семплы")
-# CAR_NUM = app.getEntry("Число поднесущих")
-# ORDER = app.getOptionBox("Размер созвездия")
-# DIST = app.getEntry("Расстояние между пилот-несущими")
-
 app.startTabbedFrame("TabbedFrame")
 app.startTab("Простые сигналы")
 
 app.setExpand("both")
-app.addRadioButton("ft", "Файл с отсчетами (текстовый файл с числами,\n как в текстовом поле ниже)")
+app.addRadioButton(
+    "ft", "Файл с отсчетами")
 app.addFileEntry("f1")
 app.addRadioButton("ft", "Готовые шаблоны:")
 app.addLabelOptionBox("Шаблон", SAMPLS)
@@ -145,12 +141,21 @@ app.setEntry("COM порт", "COM1")
 app.addHorizontalSeparator(colour="black")
 app.addButtons(["Формировать сигнал", "Начать генерацию",
                "Остановить"], press, 10, 0)
-app.addWebLink("GitHub (исходный код)", "https://github.com/JerryCarson/SynthInterface")
+app.addWebLink("GitHub (исходный код)",
+               "https://github.com/JerryCarson/SynthInterface")
 
 f = open(IN, "w+")
 f1 = open("output.txt", "w+")
 axes = app.addPlot("p1", *getXY(), 0, 2, 12, 12)
 showLabels()
 
+app.setButtonTooltip(
+    "Формировать сигнал", "По нажатию кнопки данные сигнала загружаются на плату")
+app.setButtonTooltip(
+    "Начать генерацию", "По нажатию кнопки на плату отправляется команда - начать непрерывную генерацию заданного сигнала")
+app.setButtonTooltip(
+    "Остановить", "Отправляет на плату команду остановить генерацию сигнала")
+app.setEntryTooltip(
+    "COM порт", "Необходимо посмотреть номер порта, соответствующего подключенной плате. Доступные порты можно посмотреть в диспетчере устройств (выполнить compmgmt.msc)")
 
 app.go()
