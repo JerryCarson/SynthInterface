@@ -1,4 +1,3 @@
-from faulthandler import disable
 from msilib.schema import RadioButton
 import port as port
 import numpy as np
@@ -8,22 +7,13 @@ import signal_presets
 from matplotlib.ticker import EngFormatter
 
 app = gui("Serial Communication")
+app.setResizable(canResize=False)
 
 IN = "input.txt"
 BR = 9600
 FRQS = ["0.1953", "0.2016", "0.2083", "0.2155", "0.2232", "0.2315", "0.2404", "0.25", "0.2604", "0.2717", "0.2841", "0.2976", "0.3125", "0.3289",
         "0.3472", "0.3676", "0.3906", "0.4167", "0.4464", "0.4808", "0.5208", "0.5682", "0.625", "0.6944", "0.7813", "0.8929", "1.042", "1.25", "1.563", "2.083", "3.125", "6.25"]
 SAMPLS = ["Синус", "Прямоугольный импульс"]
-
-
-def pressRB(rb):
-    if app.getRadioButton("ft") != "Готовые шаблоны:":
-        app.disableOptionBox("Шаблон")
-        app.disableOptionBox("Частота (МГц)")
-    else:
-        app.enableOptionBox("Шаблон")
-        app.enableOptionBox("Частота (МГц)")
-
 
 def checkStop():
     f.close()
@@ -68,13 +58,13 @@ def press(button):
         handler.generationStop()
     elif button == "Формировать сигнал":
         if app.getTabbedFrameSelectedTab("TabbedFrame") == "Простые сигналы":
-            if app.getRadioButton("ft") == "Задать вручную в текстовом поле:":
+            if app.getTabbedFrameSelectedTab("1") == "Текстовое поле":
                 c = port.SerialWrite(COM, BR, IN, app)
                 c.comWriteField()
-            elif app.getRadioButton("ft") == "Файл с отсчетами":
+            elif app.getTabbedFrameSelectedTab("1") == "Файл с отсчетами":
                 c = port.SerialWrite(COM, BR, app.getEntry("f1"), app)
                 c.comWrite()
-            elif app.getRadioButton("ft") == "Готовые шаблоны:":
+            elif app.getTabbedFrameSelectedTab("1") == "Готовые шаблоны":
                 if app.getOptionBox("Шаблон") == "Синус":
                     signal_presets.sine(app)
                 elif app.getOptionBox("Шаблон") == "Прямоугольный импульс":
@@ -100,18 +90,26 @@ app.startTabbedFrame("TabbedFrame")
 app.startTab("Простые сигналы")
 
 app.setExpand("both")
-app.addRadioButton(
-    "ft", "Файл с отсчетами")
+
+app.startTabbedFrame("1")
+app.startTab("Файл с отсчетами")
+app.addLabel("mess", "Необходимо указать путь к текстовому файлу.\nТекстовый файл должен содержать отсчеты сигнала,\nнаписанные в один столбик.\nВ дробных значениях использовать не запятую, а точку.\nОтсчеты на выходе переключаются каждые 10 наносекунд.\nФормируйте собственные файлы исходя из этого,\nесли необходимо добиться определенной чаcтоты.")
 app.addFileEntry("f1")
-app.addRadioButton("ft", "Готовые шаблоны:")
+app.stopTab()
+
+app.startTab("Готовые шаблоны")
 app.addLabelOptionBox("Шаблон", SAMPLS)
 app.addLabelOptionBox("Частота (МГц)", FRQS)
-app.addRadioButton("ft", "Задать вручную в текстовом поле:")
+app.stopTab()
+
+app.startTab("Текстовое поле")
+app.addLabel("m", "Текстовое поле позволяет быстро задавать\nнесложные сигналы такие как пила.\nВ дробных значениях использовать не запятую, а точку. \nОтсчеты на выходе переключаются каждые 10 наносекунд.\nФормируйте сигналы исходя из этого,\nесли необходимо добиться определенной чаcтоты.")
 app.addTextArea("t1")
 app.setTextArea("t1", "1\n2\n1\n2\n1\n")
-app.disableOptionBox("Шаблон")
-app.disableOptionBox("Частота (МГц)")
-app.setRadioButtonChangeFunction("ft", pressRB)
+app.stopTab()
+
+app.stopTabbedFrame()
+
 app.setStopFunction(checkStop)
 
 app.stopTab()
@@ -119,6 +117,7 @@ app.stopTab()
 app.startTab("OFDM генерация")
 
 app.setExpand("both")
+app.addLabel("m1", "В текстовом поле необходимо указать какие-либо целые числа. \nОни будут закодированы соответствующим образом, \nи из этого кода будет сформирован OFDM сигнал.")
 app.addTextArea("t2")
 app.addRadioButton("song", "Формировать сигнал")
 app.addRadioButton("song", "Формировать огибающую")
