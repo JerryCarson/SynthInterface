@@ -1,5 +1,4 @@
 from msilib.schema import RadioButton
-from tkinter.tix import LabelEntry
 import port as port
 import numpy as np
 from appJar import gui
@@ -41,7 +40,7 @@ def showLabels():
 
 
 def press(button):
-    
+
     COM = app.getEntry("COM порт")
     SAMPL = app.getEntry("Семплы")
     CAR_NUM = app.getEntry("Число поднесущих")
@@ -87,13 +86,15 @@ def press(button):
         axes = app.updatePlot("p1", *getXY())
         showLabels()
 
+
 def opt_changed():
     if app.getOptionBox("Шаблон") == "Случайный сигнал по Гауссу":
         app.showLabel("Значение:")
         app.showLabel("Стандартное отклонение:")
     else:
         app.hideLabel("Значение:")
-        app.hideLabel("Стандартное отклонение:") 
+        app.hideLabel("Стандартное отклонение:")
+
 
 app.startTabbedFrame("TabbedFrame")
 app.startTab("Простые сигналы")
