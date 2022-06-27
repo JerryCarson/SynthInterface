@@ -2,6 +2,7 @@ import numpy as np
 from scipy import signal
 from scipy.signal import hilbert
 import pyofdm.codec
+import random
 
 #there are some functions for signal genration
 #they return array of Y values
@@ -14,16 +15,16 @@ def step(app):  #special function for frequency setup
 
 def sine(app):
     with open("input.txt", "w+") as input:
-        a = np.linspace(0, 2*np.pi, 512)
-        for i in range (0, 512, step(app)):
+        a = np.linspace(0, 2*np.pi, 511)
+        for i in range (0, 511, step(app)):
             input.write(str(np.sin(a[i]))) 
             input.write("\n")
 
 def square(app):
     with open("input.txt", "w+") as input:
-        t = np.linspace(0, 1, 512, endpoint=False)
+        t = np.linspace(0, 1, 511, endpoint=False)
         a = signal.square(2 * np.pi * 1 * t)
-        for i in range (0, 512, step(app)):
+        for i in range (0, 511, step(app)):
             input.write(str(a[i]))
             input.write("\n")
 
@@ -65,3 +66,12 @@ def get_envelope(ofdm_signal, app):
                 ouf.write(str(np.sin(i+j)*np.real(analytic_signal[i]+0.003)))
                 ouf.write("\n")
     return np.abs(analytic_signal)
+
+def gauss(mu, sigma, app):
+    with open("input.txt", "w+") as input:
+        a = np.empty(shape=(512), dtype=int)
+        for i in range(0, 511):
+            a[i] = random.gauss(0, 10)
+        for i in range(0, 511, step(app)):
+            input.write(str(a[i]))
+            input.write("\n")

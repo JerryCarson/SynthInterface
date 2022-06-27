@@ -1,4 +1,5 @@
 from msilib.schema import RadioButton
+from tkinter.tix import LabelEntry
 import port as port
 import numpy as np
 from appJar import gui
@@ -46,6 +47,8 @@ def press(button):
     CAR_NUM = app.getEntry("Число поднесущих")
     ORDER = app.getOptionBox("Размер созвездия")
     DIST = app.getEntry("Расстояние между пилот-несущими")
+    mu = app.getEntry("Значение:")
+    sigma = app.getEntry("Стандартное отклонение:")
 
     if button == "Начать генерацию":
         handler = port.SerialWrite(COM, inits.BR, inits.IN, app)
@@ -66,6 +69,8 @@ def press(button):
                     signal_presets.sine(app)
                 elif app.getOptionBox("Шаблон") == "Прямоугольный импульс":
                     signal_presets.square(app)
+                elif app.getOptionBox("Шаблон") == "Случайный сигнал по Гауссу":
+                    signal_presets.gauss(mu, sigma, app)
                 c = port.SerialWrite(COM, inits.BR, inits.IN, app)
                 c.comWrite()
         elif app.getTabbedFrameSelectedTab("TabbedFrame") == "OFDM генерация":
@@ -82,6 +87,13 @@ def press(button):
         axes = app.updatePlot("p1", *getXY())
         showLabels()
 
+def opt_changed():
+    if app.getOptionBox("Шаблон") == "Случайный сигнал по Гауссу":
+        app.showLabel("Значение:")
+        app.showLabel("Стандартное отклонение:")
+    else:
+        app.hideLabel("Значение:")
+        app.hideLabel("Стандартное отклонение:") 
 
 app.startTabbedFrame("TabbedFrame")
 app.startTab("Простые сигналы")
@@ -96,6 +108,13 @@ app.stopTab()
 app.startTab("Готовые шаблоны")
 app.addLabelOptionBox("Шаблон", inits.SAMPLS)
 app.addLabelOptionBox("Частота (МГц)", inits.FRQS)
+app.addLabelEntry("Значение:")
+app.setEntry("Значение:", 0)
+app.addLabelEntry("Стандартное отклонение:")
+app.setEntry("Стандартное отклонение:", 10)
+app.hideLabel("Значение:")
+app.hideLabel("Стандартное отклонение:")
+app.setOptionBoxChangeFunction("Шаблон", opt_changed)
 app.stopTab()
 
 app.startTab("Текстовое поле")
